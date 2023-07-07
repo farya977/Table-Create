@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Todo List</title>
+</head>
+<body>
+
+<?php
+// Initialize an empty array to store the todo items
+$todoList = [];
+
+// Check if the form is submitted
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    // Get the new todo item from the form
+    $newTodo = $_POST['todo'];
+
+    // Add the new todo item to the array
+    $todoList[] = $newTodo;
+}
+
+// Check if the delete button is clicked
+if (isset($_GET['delete'])) {
+    $index = $_GET['delete'];
+
+    // Remove the todo item from the array based on its index
+    unset($todoList[$index]);
+    // Re-index the array
+    $todoList = array_values($todoList);
+}
+
+// Display the todo items in a table
+if (!empty($todoList)) {
+    echo "<table>";
+    echo "<tr><th>Todo Item</th><th>Action</th></tr>";
+    foreach ($todoList as $index => $todoItem) {
+        echo "<tr>";
+        echo "<td>$todoItem</td>";
+        echo "<td><a href='?delete=$index'>Delete</a></td>";
+        echo "</tr>";
+    }
+    echo "</table>";
+} else {
+    echo "<p>No items in the todo list.</p>";
+}
+?>
+
+<!-- Todo form -->
+<form method="post" action="">
+    <label for="todo">New Todo Item:</label>
+    <input type="text" id="todo" name="todo" required>
+    <input type="submit" value="Add">
+</form>
+
+</body>
+</html>
